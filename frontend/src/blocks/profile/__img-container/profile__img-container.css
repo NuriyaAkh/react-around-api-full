@@ -1,0 +1,22 @@
+.profile__img-container{
+  position: relative;
+  
+  max-height: 127px;
+  min-width: 127px;
+  padding: 0;
+  margin-right: 42px;
+  transition: all 0.5s;
+  cursor: pointer;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0);
+}
+@media screen and (max-width: 900px) {
+  .profile__img-container {
+    margin: 0;
+    margin-bottom: 26px;
+  }
+}
+
+.profile__img-container:hover .profile__img-edit-logo{
+  opacity: 0.8;
+}

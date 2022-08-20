@@ -1,0 +1,23 @@
+.footer {
+
+  color: #545454;
+  width: 100%;
+  max-width: 880px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 65px auto;
+  box-sizing: border-box;
+}
+@media screen and (max-width: 800px) {
+  .footer {
+    max-width: 581px;
+  }
+}
+@media screen and (max-width: 590px) {
+  .footer {
+
+    max-width: 282px;
+    margin:50px auto 36px;
+  }
+}

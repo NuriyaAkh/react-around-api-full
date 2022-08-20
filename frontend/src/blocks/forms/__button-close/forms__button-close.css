@@ -1,0 +1,26 @@
+.forms__button-close {
+  background: transparent url(../../../images/closeIcon.svg) center no-repeat;
+  border: none;
+  cursor: pointer;
+  transition: all .4s;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: -60px;
+  width: 26px;
+  height: 26px;
+}
+
+@media screen and (min-width: 591px) {
+  .forms__button-close {
+    /* TODO: double check all margins.padding according to the design */
+    top:-40px;
+    right: -40px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.forms__button-close:hover {
+  opacity: 0.6;
+}

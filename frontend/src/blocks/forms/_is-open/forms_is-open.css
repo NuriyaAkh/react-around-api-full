@@ -1,0 +1,5 @@
+.forms_is-open{
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s, opacity 0.4s linear;
+}

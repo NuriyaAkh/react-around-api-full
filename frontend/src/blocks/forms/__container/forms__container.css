@@ -1,0 +1,16 @@
+.forms__container{
+  margin: 0;
+  box-sizing: border-box;
+  background-color: rgba(255,255,255, 1);
+  border-radius: 10px;
+  width: 430px;
+  position:relative;
+  padding:34px 36px 36px 36px;
+}
+@media screen and (max-width: 590px) {
+  .forms__container{
+    width: 282px;
+    padding: 25px 22px;
+
+  }
+}

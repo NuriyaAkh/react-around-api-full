@@ -1,0 +1,16 @@
+.profile__text {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: auto;
+  min-width: 415px;
+}
+@media screen and (max-width: 900px) {
+  .profile__text {
+    min-width: 581px;
+  }
+}
+@media screen and (max-width: 590px) {
+  .profile__text {
+    min-width: 282px;
+  }
+}
