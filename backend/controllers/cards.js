@@ -19,6 +19,7 @@ const createNewCard = (req, res) => {
       handleError(err, req, res);
     });
 };
+
 const deleteCard = (req, res) => {
   Card.findByIdAndDelete(req.params.cardId)
     .orFail()

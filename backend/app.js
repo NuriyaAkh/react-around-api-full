@@ -6,6 +6,9 @@ const app = express();
 const { PORT = 3000 } = process.env;
 const userRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
+const { createNewUser, login } = require('../controllers/users');
+
+require('dotenv').config();
 
 app.use(helmet());
 mongoose.connect('mongodb://localhost:27017/aroundb');
@@ -19,9 +22,13 @@ app.use((req, res, next) => {
   };
   next();
 });
-
+app.post('/signin', login);
+app.post('/signup', createNewUser);
+// authorization
+app.use(auth);
 app.use('/', userRouter);
 app.use('/', cardsRouter);
+
 
 app.listen(PORT, () => {
   console.log(`App listening at port ${PORT}`);
