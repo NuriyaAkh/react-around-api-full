@@ -7,7 +7,7 @@ const { PORT = 3000 } = process.env;
 const userRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const { createNewUser, login } = require('../controllers/users');
-
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 require('dotenv').config();
 
 app.use(helmet());
@@ -22,12 +22,16 @@ app.use(express.json());
 //   };
 //   next();
 // });
+app.use(requestLogger); // enabling the request logger
+
 app.post('/signin', login);
 app.post('/signup', createNewUser);
 // authorization
 app.use(auth);
 app.use('/', userRouter);
 app.use('/', cardsRouter);
+
+app.use(errorLogger); // enabling the error logger
 // error handlers
 app.use(errors()); // celebrate error handler
 
