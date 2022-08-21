@@ -16,12 +16,12 @@ mongoose.connect('mongodb://localhost:27017/aroundb');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '62c9db8f6db879685b8a9d3f',
-  };
-  next();
-});
+// app.use((req, res, next) => {
+//   req.user = {
+//     _id: '62c9db8f6db879685b8a9d3f',
+//   };
+//   next();
+// });
 app.post('/signin', login);
 app.post('/signup', createNewUser);
 // authorization

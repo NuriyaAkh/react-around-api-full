@@ -53,6 +53,7 @@ const updateUserData = (req, res) => {
     });
 };
 const updateUserAvatar = (req, res) => {
+  
   const { avatar } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
@@ -88,6 +89,19 @@ const login = (req, res) => {
       res.status(401).send({ message: err.message });
     });
 };
+const getCurrentUser = (req, res, next) => {
+  const currentUser = req.user._id;
+  User.findById(currentUser)
+    .orFail(() => {
+      const error = new Error("No user found with that id");
+      error.statusCode = 404;
+      throw error;
+    })
+    .then((user) => res.send(user))
+    .catch((err) => {
+      handleError(err, req, res);
+    });
+};
 
 module.exports = {
   getUsers,
@@ -96,4 +110,5 @@ module.exports = {
   updateUserData,
   updateUserAvatar,
   login,
+  getCurrentUser,
 };

@@ -43,7 +43,8 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
   email,
   password
 ) {
-  return this.findOne({ email }) // this — the User model
+  return this.findOne({ email }).select('+password') // this — the User model
+  // the password hash will be there, in the user object
     .then((user) => {
       // not found - rejecting the promise
       if (!user) {
