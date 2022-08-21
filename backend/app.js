@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
-
+const { errors } = require('celebrate');
 const app = express();
 const { PORT = 3000 } = process.env;
 const userRouter = require('./routes/users');
@@ -28,7 +28,10 @@ app.post('/signup', createNewUser);
 app.use(auth);
 app.use('/', userRouter);
 app.use('/', cardsRouter);
+// error handlers
+app.use(errors()); // celebrate error handler
 
+// centralized error handler
 app.use((err, req, res, next) => {
   // if an error has no status, display 500
   const { statusCode = 500, message } = err;
