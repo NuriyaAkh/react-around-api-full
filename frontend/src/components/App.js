@@ -1,4 +1,4 @@
-import React, {useEffect, useState,useCallback} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {Route, Switch, Redirect, useHistory} from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
@@ -7,7 +7,7 @@ import ImagePopup from './ImagePopup';
 import '../index.css';
 import api from '../utils/api';
 import * as auth from '../utils/auth';
-import {register, login, validateUser} from '../utils/auth'
+import {register, login, checkToken} from '../utils/auth';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -32,10 +32,12 @@ function App() {
   const [email, setEmail] = useState('');
   const [isInfoToolPopupOpen, setInfoToolPopupOpen] = React.useState(false);
   const [isInfoToolStatus, setInfoToolStatus] = React.useState('');
+
+
   const verifyToken = useCallback(() => {
     const userToken = localStorage.getItem('jwt');
     if (userToken) {
-      validateUser(userToken)
+      checkToken(userToken)
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
@@ -54,36 +56,37 @@ function App() {
   //get user data
   useEffect(() => {
     const userToken = localStorage.getItem('jwt');
-    if (userToken && isLoggedIn){
-    api
-      .getUserData()
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) =>
-        console.error(`Error while loading profile info: ${err}`)
-      );
+    if (userToken && isLoggedIn) {
+      api
+        .getUserData()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) =>
+          console.error(`Error while loading profile info: ${err}`)
+        );
     }
   }, [isLoggedIn]);
   //get cards data
   useEffect(() => {
     const userToken = localStorage.getItem('jwt');
-    if (userToken && isLoggedIn){
-    api
-      .getInitialCards()
-      .then((data) => {
-        setCards(data);
-      })
-      .catch((err) =>
-        console.error(`Error while executing cards data: ${err}`)
-      );}
+    if (userToken && isLoggedIn) {
+      api
+        .getInitialCards()
+        .then((data) => {
+          setCards(data);
+        })
+        .catch((err) =>
+          console.error(`Error while executing cards data: ${err}`)
+        );
+    }
   }, [isLoggedIn]);
 
   useEffect(() => {
     const userToken = localStorage.getItem('jwt');
     if (userToken) {
       auth
-        .validateUser(userToken)
+        .checkToken(userToken)
         .then((res) => {
           if (res) {
             setEmail(res.data.email);
@@ -121,18 +124,21 @@ function App() {
       .login({email, password})
       .then((res) => {
         if (res.token) {
+          localStorage.setItem('jwt', res.token);
           setIsLoggedIn(true);
           setEmail(email);
-          localStorage.setItem('jwt', res.token);
           localStorage.setItem('email', email);
           history.push('/');
         } else {
           setInfoToolStatus('fail');
-          setInfoToolPopupOpen(true);
+          
         }
       })
       .catch((err) => {
         setInfoToolStatus('fail');
+        
+      })
+      .finally(() => {
         setInfoToolPopupOpen(true);
       });
   };
@@ -158,7 +164,7 @@ function App() {
 
     // Send a request to the API and getting the updated card data
     api
-      .changeLikeCardStatus(card._id, !isLiked)
+      .changeLikeCardStatus(card._id, !isLiked, localStorage.getItem('jwt'))
       .then((newCard) => {
         setCards((state) =>
           state.map((currentCard) =>
@@ -171,7 +177,7 @@ function App() {
   function handleCardDelete(card) {
     setIsLoading(true);
     api
-      .deleteCard(card._id)
+      .deleteCard(card._id, localStorage.getItem('jwt'))
 
       .then(() => {
         setCards(cards.filter((deletedCard) => deletedCard._id !== card._id));
@@ -185,7 +191,7 @@ function App() {
   function handleUpdateUser(userUpdate) {
     setIsLoading(true);
     api
-      .editProfileInfo(userUpdate)
+      .editProfileInfo(userUpdate, localStorage.getItem('jwt'))
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
@@ -198,7 +204,7 @@ function App() {
   function handleUpdateAvatar(avatarUpdate) {
     setIsLoading(true);
     api
-      .editProfilePicture(avatarUpdate)
+      .editProfilePicture(avatarUpdate, localStorage.getItem('jwt'))
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
@@ -211,7 +217,7 @@ function App() {
   function handleAddPlaceCard(newCard) {
     setIsLoading(true);
     api
-      .addNewCard(newCard)
+      .addNewCard(newCard, localStorage.getItem('jwt'))
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();

@@ -30,7 +30,7 @@ const login = ({email, password}) => {
       return;
     });
 };
-const validateUser = (token) => {
+const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
@@ -42,4 +42,4 @@ const validateUser = (token) => {
     .then((data) => data);
 };
 
-export {register, login, validateUser};
+export {register, login, checkToken};
