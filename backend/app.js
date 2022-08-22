@@ -6,10 +6,10 @@ const app = express();
 const { PORT = 3000 } = process.env;
 const userRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
-const { createNewUser, login } = require('../controllers/users');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { createNewUser, login } = require('./controllers/user');
+const { requestLogger, errorLogger } = require('./middleware/logger');
 require('dotenv').config();
-
+const auth = require('./middleware/auth');
 app.use(helmet());
 mongoose.connect('mongodb://localhost:27017/aroundb');
 

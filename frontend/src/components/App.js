@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useCallback} from 'react';
 import {Route, Switch, Redirect, useHistory} from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
@@ -7,6 +7,7 @@ import ImagePopup from './ImagePopup';
 import '../index.css';
 import api from '../utils/api';
 import * as auth from '../utils/auth';
+import {register, login, validateUser} from '../utils/auth'
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -31,8 +32,29 @@ function App() {
   const [email, setEmail] = useState('');
   const [isInfoToolPopupOpen, setInfoToolPopupOpen] = React.useState(false);
   const [isInfoToolStatus, setInfoToolStatus] = React.useState('');
+  const verifyToken = useCallback(() => {
+    const userToken = localStorage.getItem('jwt');
+    if (userToken) {
+      validateUser(userToken)
+        .then((res) => {
+          if (res) {
+            setIsLoggedIn(true);
+          }
+        })
+        .catch((err) => {
+          // if token is invalid, user will be logged out, no error needs to be displayed to the user
+          console.log(err);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    verifyToken();
+  }, [verifyToken]);
   //get user data
   useEffect(() => {
+    const userToken = localStorage.getItem('jwt');
+    if (userToken && isLoggedIn){
     api
       .getUserData()
       .then((data) => {
@@ -41,9 +63,12 @@ function App() {
       .catch((err) =>
         console.error(`Error while loading profile info: ${err}`)
       );
-  }, []);
+    }
+  }, [isLoggedIn]);
   //get cards data
   useEffect(() => {
+    const userToken = localStorage.getItem('jwt');
+    if (userToken && isLoggedIn){
     api
       .getInitialCards()
       .then((data) => {
@@ -51,8 +76,8 @@ function App() {
       })
       .catch((err) =>
         console.error(`Error while executing cards data: ${err}`)
-      );
-  }, []);
+      );}
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const userToken = localStorage.getItem('jwt');

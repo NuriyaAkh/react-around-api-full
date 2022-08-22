@@ -82,10 +82,13 @@ class Api {
     }).then(this._checkResponse);
   }
 }
+const BASE_URL =  process.env.REACT_APP_API_URL|| 'http://localhost:4000';
+
 const api = new Api({
-  baseUrl: 'https://around.nomoreparties.co/v1/group-12',
+  baseUrl: BASE_URL,
   headers: {
     authorization: '66d060c3-a92b-49d0-add5-d7e29bf411c9',
+    //`Bearer ${localStorage.getItem('jwt')}`,
     'Content-Type': 'application/json',
   },
 });
