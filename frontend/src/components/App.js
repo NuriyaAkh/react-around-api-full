@@ -120,6 +120,7 @@ function App() {
   };
 
   const onLogIn = ({email, password}) => {
+    console.log("localStorage.getItem('jwt')")
     auth
       .login({email, password})
       .then((res) => {
