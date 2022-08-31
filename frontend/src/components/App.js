@@ -33,9 +33,9 @@ function App() {
   const [isInfoToolPopupOpen, setInfoToolPopupOpen] = React.useState(false);
   const [isInfoToolStatus, setInfoToolStatus] = React.useState('');
 
-
   const verifyToken = useCallback(() => {
     const userToken = localStorage.getItem('jwt');
+
     if (userToken) {
       checkToken(userToken)
         .then((res) => {
@@ -84,6 +84,7 @@ function App() {
 
   useEffect(() => {
     const userToken = localStorage.getItem('jwt');
+    console.log(userToken);
     if (userToken) {
       auth
         .checkToken(userToken)
@@ -120,7 +121,6 @@ function App() {
   };
 
   const onLogIn = ({email, password}) => {
-    console.log("localStorage.getItem('jwt')")
     auth
       .login({email, password})
       .then((res) => {
@@ -132,12 +132,10 @@ function App() {
           history.push('/');
         } else {
           setInfoToolStatus('fail');
-          
         }
       })
       .catch((err) => {
         setInfoToolStatus('fail');
-        
       })
       .finally(() => {
         setInfoToolPopupOpen(true);

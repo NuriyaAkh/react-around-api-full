@@ -7,25 +7,28 @@ const NotFoundError = require("../errors/not-found-error");
 const BadRequestError = require("../errors/bad-request-error");
 const ConflictError = require("../errors/conflict-error");
 const AuthorizationError = require("../errors/authorization-error");
-
+const jwt = require("jsonwebtoken");
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-const getUsers = (req, res) =>
+const getUsers = (req, res, next) =>
   User.find({})
     .orFail(new NotFoundError("Users are not found"))
     .then((users) => res.status(HTTP_SUCCESS_OK).send(users))
     .catch(next);
 
-const getUsersById = (req, res) =>
+const getUsersById = (req, res, next) =>
   User.findById(req.params.id)
     .orFail(new NotFoundError("No user found with that id"))
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
     .catch(next);
 
-const createNewUser = (req, res) => {
+const createNewUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
+  console.log(email);
   User.findOne({ email })
     .then((user) => {
+      console.log(user);
+
       if (user) {
         throw new ConflictError(
           "The user with the provided email already exists"
@@ -34,7 +37,10 @@ const createNewUser = (req, res) => {
         return bcrypt.hash(password, 10);
       }
     })
-    .then((hash) => User.create({ name, about, avatar, email, password: hash }))
+    .then((hash) => {
+      console.log(hash);
+      User.create({ name, about, avatar, email, password: hash });
+    })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -44,7 +50,7 @@ const createNewUser = (req, res) => {
       }
     });
 };
-const updateUserData = (req, res) => {
+const updateUserData = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
@@ -54,16 +60,16 @@ const updateUserData = (req, res) => {
     .orFail(new NotFoundError("No user found with matching id"))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Invalid name or about'));
-      } else if (err.name === 'CastError') {
-        next(new BadRequestError('Invalid User ID'));
+      if (err.name === "ValidationError") {
+        next(new BadRequestError("Invalid name or about"));
+      } else if (err.name === "CastError") {
+        next(new BadRequestError("Invalid User ID"));
       } else {
         next(err);
       }
     });
 };
-const updateUserAvatar = (req, res) => {
+const updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
@@ -73,19 +79,25 @@ const updateUserAvatar = (req, res) => {
     .orFail(new NotFoundError("No user found with matching id"))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Invalid avatar URL'));
-      } else if (err.name === 'CastError') {
-        next(new BadRequestError('Invalid User ID'));
+      if (err.name === "ValidationError") {
+        next(new BadRequestError("Invalid avatar URL"));
+      } else if (err.name === "CastError") {
+        next(new BadRequestError("Invalid User ID"));
       } else {
         next(err);
       }
     });
 };
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
+
   return User.findUserByCredentials(email, password)
     .then((user) => {
+      console.log(user);
+      console.log(
+        "backend when login",
+        NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
+      );
       // authentication successful! user is in the user variable
       const token = jwt.sign(
         { _id: user._id },
@@ -96,8 +108,9 @@ const login = (req, res) => {
       );
       res.send({ data: user.toJSON(), token });
     })
-    .catch(() => {
-     next( new AuthorizationError("Incorrect email or password"))
+    .catch((err) => {
+      next(new AuthorizationError("Incorrect email or password"));
+      console.log(err);
     });
 };
 const getCurrentUser = (req, res, next) => {

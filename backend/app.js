@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
+const cors = require('cors');
 const app = express();
 const { PORT = 3000 } = process.env;
 const userRouter = require('./routes/users');
@@ -22,6 +23,13 @@ app.use(express.json());
 //   };
 //   next();
 // });
+
+
+// include these before other routes
+app.use(cors());
+app.options('*', cors()); //enable requests for all routes
+
+
 app.use(requestLogger); // enabling the request logger
 
 app.post('/signin', login);
