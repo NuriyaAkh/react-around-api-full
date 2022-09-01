@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 const { NODE_ENV, JWT_SECRET } = process.env;
-console.log(
-  "auth, middleware",
-  NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
-);
+// console.log(
+//   "auth, middleware",
+//   NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
+// );
 const auth = (req, res, next) => {
   // getting authorization from the header
   const { authorization } = req.headers;

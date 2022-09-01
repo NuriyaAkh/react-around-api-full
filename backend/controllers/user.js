@@ -40,8 +40,8 @@ const createNewUser = (req, res, next) => {
       }
     })
     .then((hash) => {
-      console.log(hash);
-      // TODO: return this line
+      //console.log(hash);
+
       return User.create({ name, about, avatar, email, password: hash });
     })
     .then((user) => res.send({ data: user }))
@@ -96,11 +96,11 @@ const login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      console.log(user);
-      console.log(
-        "user.js controllers",
-        NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
-      );
+      console.log("user", user);
+      // console.log(
+      //   "user.js controllers",
+      //   NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
+      // );
       // authentication successful! user is in the user variable
       const token = jwt.sign(
         { _id: user._id },
@@ -117,8 +117,9 @@ const login = (req, res, next) => {
     });
 };
 const getCurrentUser = (req, res, next) => {
+  console.log(req);
   const currentUser = req.user._id;
-  console.log({ currentUser });
+  console.log("currentUser",{ currentUser });
   User.findById(currentUser)
     .orFail(new NotFoundError("No user found with matching id"))
     .then((user) => res.send(user))
