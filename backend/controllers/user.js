@@ -16,18 +16,20 @@ const getUsers = (req, res, next) =>
     .then((users) => res.status(HTTP_SUCCESS_OK).send(users))
     .catch(next);
 
-const getUsersById = (req, res, next) =>
-  User.findById(req.params.id)
+const getUsersById = (req, res, next) => {
+  console.log("req.params.id", req.params.id);
+  return User.findById(req.params._id)
     .orFail(new NotFoundError("No user found with that id"))
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
     .catch(next);
+};
 
 const createNewUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
-  console.log(req.body.email);
+  console.log("body", req.body.password);
   User.findOne({ email })
     .then((user) => {
-      console.log(user);
+      console.log("user", user);
 
       if (user) {
         throw new ConflictError(
@@ -39,7 +41,8 @@ const createNewUser = (req, res, next) => {
     })
     .then((hash) => {
       console.log(hash);
-      User.create({ name, about, avatar, email, password: hash });
+      // TODO: return this line
+      return User.create({ name, about, avatar, email, password: hash });
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
@@ -115,6 +118,7 @@ const login = (req, res, next) => {
 };
 const getCurrentUser = (req, res, next) => {
   const currentUser = req.user._id;
+  console.log({ currentUser });
   User.findById(currentUser)
     .orFail(new NotFoundError("No user found with matching id"))
     .then((user) => res.send(user))
