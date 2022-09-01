@@ -23,24 +23,23 @@ const userSchema = new mongoose.Schema({
         /https?:\/\/(www\.)?\S+\/[-._~:/?%#[\]@!$&'()*+,;=\w]*#?$/.test(v);
       },
       message: 'Please enter a valid link starting with "http" or "https"',
-    },},
-
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      validate: {
-        validator: (v) => validator.isEmail(v),
-        message: "You must enter a valid email address",
-      },
-    },
-    password: {
-      type: String,
-      required: true,
-      select: false,
     },
   },
-);
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: {
+      validator: (v) => validator.isEmail(v),
+      message: "You must enter a valid email address",
+    },
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false,
+  },
+});
 
 userSchema.statics.findUserByCredentials = function findUserByCredentials(
   email,
@@ -55,7 +54,7 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
         if (!user) {
           return Promise.reject(new Error("Incorrect email or password"));
         }
-console.log(user);
+        console.log(user);
         // found - comparing hashes
         return bcrypt.compare(password, user.password).then((match) => {
           if (!match) {

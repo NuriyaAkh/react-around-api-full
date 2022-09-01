@@ -24,7 +24,7 @@ const getUsersById = (req, res, next) =>
 
 const createNewUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
-  console.log(email);
+  console.log(req.body.email);
   User.findOne({ email })
     .then((user) => {
       console.log(user);
@@ -95,7 +95,7 @@ const login = (req, res, next) => {
     .then((user) => {
       console.log(user);
       console.log(
-        "backend when login",
+        "user.js controllers",
         NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
       );
       // authentication successful! user is in the user variable

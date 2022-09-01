@@ -53,6 +53,7 @@ function App() {
   useEffect(() => {
     verifyToken();
   }, [verifyToken]);
+
   //get user data
   useEffect(() => {
     const userToken = localStorage.getItem('jwt');
@@ -67,6 +68,7 @@ function App() {
         );
     }
   }, [isLoggedIn]);
+
   //get cards data
   useEffect(() => {
     const userToken = localStorage.getItem('jwt');
@@ -84,7 +86,7 @@ function App() {
 
   useEffect(() => {
     const userToken = localStorage.getItem('jwt');
-    console.log(userToken);
+    // console.log(userToken);
     if (userToken) {
       auth
         .checkToken(userToken)
@@ -97,7 +99,7 @@ function App() {
             localStorage.removeItem('jwt');
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err + 'err from here'));
     }
   }, [history]);
 
@@ -124,6 +126,7 @@ function App() {
     auth
       .login({email, password})
       .then((res) => {
+        console.log(res);
         if (res.token) {
           localStorage.setItem('jwt', res.token);
           setIsLoggedIn(true);
