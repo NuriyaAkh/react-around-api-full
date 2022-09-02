@@ -10,6 +10,33 @@ const AuthorizationError = require("../errors/authorization-error");
 const jwt = require("jsonwebtoken");
 const { NODE_ENV, JWT_SECRET } = process.env;
 
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      //console.log("user", user);
+      console.log(
+        "controllers/user.js ",
+        NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
+      );
+      console.log("environment:", NODE_ENV);
+      // authentication successful! user is in the user variable
+      const token = jwt.sign(
+        { _id: user._id },
+
+        NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
+        {
+          expiresIn: "7d",
+        }
+      );
+      res.send({ data: user.toJSON(), token });
+    })
+    // .catch((err) => {
+    //   next(new AuthorizationError("Incorrect email or password"));
+    //   console.log(err);
+    // });
+};
 const getUsers = (req, res, next) =>
   User.find({})
     .orFail(new NotFoundError("Users are not found"))
@@ -26,10 +53,10 @@ const getUsersById = (req, res, next) => {
 
 const createNewUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
-  console.log("body", req.body.password);
+  //console.log("body", req.body.password);
   User.findOne({ email })
     .then((user) => {
-      console.log("user", user);
+      //console.log("user", user);
 
       if (user) {
         throw new ConflictError(
@@ -91,33 +118,9 @@ const updateUserAvatar = (req, res, next) => {
       }
     });
 };
-const login = (req, res, next) => {
-  const { email, password } = req.body;
 
-  return User.findUserByCredentials(email, password)
-    .then((user) => {
-      console.log("user", user);
-      // console.log(
-      //   "user.js controllers",
-      //   NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
-      // );
-      // authentication successful! user is in the user variable
-      const token = jwt.sign(
-        { _id: user._id },
-        NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
-        {
-          expiresIn: "7d",
-        }
-      );
-      res.send({ data: user.toJSON(), token });
-    })
-    .catch((err) => {
-      next(new AuthorizationError("Incorrect email or password"));
-      console.log(err);
-    });
-};
 const getCurrentUser = (req, res, next) => {
-  console.log(req);
+ // console.log(req);
   const currentUser = req.user._id;
   console.log("currentUser",{ currentUser });
   User.findById(currentUser)
