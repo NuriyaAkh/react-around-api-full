@@ -99,7 +99,7 @@ function App() {
             localStorage.removeItem('jwt');
           }
         })
-        .catch((err) => console.log(err + 'err from here'));
+        .catch((err) => console.log(err + 'err from frontend App.js line 102'));
     }
   }, [history]);
 

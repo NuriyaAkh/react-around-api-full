@@ -9,7 +9,7 @@ const ConflictError = require("../errors/conflict-error");
 const AuthorizationError = require("../errors/authorization-error");
 const jwt = require("jsonwebtoken");
 const { NODE_ENV, JWT_SECRET } = process.env;
-
+console.log(process.env);
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
@@ -28,14 +28,14 @@ const login = (req, res, next) => {
         NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
         {
           expiresIn: "7d",
-        }
+        },
       );
       res.send({ data: user.toJSON(), token });
     })
-    // .catch((err) => {
-    //   next(new AuthorizationError("Incorrect email or password"));
-    //   console.log(err);
-    // });
+    .catch((err) => {
+      next(new AuthorizationError("Incorrect email or password"));
+      console.log("error from login",err);
+    });
 };
 const getUsers = (req, res, next) =>
   User.find({})
@@ -44,7 +44,7 @@ const getUsers = (req, res, next) =>
     .catch(next);
 
 const getUsersById = (req, res, next) => {
-  console.log("req.params.id", req.params.id);
+  console.log("req.params.id", req.params.id);//?
   return User.findById(req.params._id)
     .orFail(new NotFoundError("No user found with that id"))
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))

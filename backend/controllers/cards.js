@@ -1,11 +1,14 @@
-const handleError = require("../utils");
+const {handleError} = require("../utils");
 const { errorTypes } = require("../utils");
 const Card = require("../models/card");
 
 const getCards = (req, res) => {
+
   Card.find({})
     .orFail()
-    .then((cards) => res.status(errorTypes.OK).send(cards))
+    .then((cards) => {
+      console.log(cards);
+      res.status(errorTypes.OK).send(cards)})
     .catch((err) => {
       handleError(err, req, res);
     });

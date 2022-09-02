@@ -21,12 +21,12 @@ const auth = (req, res, next) => {
    try {
     // trying to verify the token
     payload = jwt.verify(
-      token,
+      token, 
        NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
     );
    }
    catch (err) {
-    console.log("auth catch err");
+    //console.log("auth catch err");
      // we return an error if something goes wrong
      return res.status(401).send({ message: "Authorization required" });
 

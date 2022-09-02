@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+require("dotenv").config();
 const helmet = require("helmet");
 const { errors } = require("celebrate");
 const cors = require("cors");
@@ -9,7 +10,7 @@ const userRouter = require("./routes/users");
 const cardsRouter = require("./routes/cards");
 const { createNewUser, login } = require("./controllers/user");
 const { requestLogger, errorLogger } = require("./middleware/logger");
-require("dotenv").config();
+
 const auth = require("./middleware/auth");
 app.use(helmet());
 mongoose.connect("mongodb://localhost:27017/aroundb");

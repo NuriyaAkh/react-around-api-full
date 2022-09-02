@@ -3,6 +3,7 @@ import {CurrentUserContext} from '../contexts/CurrentUserContext';
 
 export default function Card({card, onCardClick, onCardLike, onCardDelete}) {
   const currentUser = React.useContext(CurrentUserContext);
+  
   // Checking if the current user is the owner of the current card
   const isOwn = card.owner._id === currentUser._id;
   // Check if the card was liked by the current user

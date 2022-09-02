@@ -20,5 +20,5 @@ const handleError = (err, req, res) => {
       .send({ message: `An error has occurred on the server ${err}` });
   }
 };
-module.exports = handleError;
-module.exports = { errorTypes };
+
+module.exports = { handleError,errorTypes };
