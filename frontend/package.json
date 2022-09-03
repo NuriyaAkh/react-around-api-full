@@ -1,5 +1,5 @@
 {
-  "name": "around-react",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -40,6 +40,7 @@
     ]
   },
   "devDependencies": {
+    "prettier": "^2.7.1",
     "gh-pages": "^4.0.0"
   },
   "homepage": "https://nuriyaakh.github.io/react-around-api-full/"

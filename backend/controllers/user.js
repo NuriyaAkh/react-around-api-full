@@ -1,5 +1,4 @@
-const handleError = require("../utils");
-const { errorTypes } = require("../utils");
+const {handleError, errorTypes } = require("../utils");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const { HTTP_SUCCESS_OK } = require("../utils/error");
@@ -9,18 +8,18 @@ const ConflictError = require("../errors/conflict-error");
 const AuthorizationError = require("../errors/authorization-error");
 const jwt = require("jsonwebtoken");
 const { NODE_ENV, JWT_SECRET } = process.env;
-console.log(process.env);
+// console.log(process.env);
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
       //console.log("user", user);
-      console.log(
-        "controllers/user.js ",
-        NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
-      );
-      console.log("environment:", NODE_ENV);
+      // console.log(
+      //   "controllers/user.js ",
+      //   NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
+      // );
+      // console.log("environment:", NODE_ENV);
       // authentication successful! user is in the user variable
       const token = jwt.sign(
         { _id: user._id },
@@ -122,7 +121,7 @@ const updateUserAvatar = (req, res, next) => {
 const getCurrentUser = (req, res, next) => {
  // console.log(req);
   const currentUser = req.user._id;
-  console.log("currentUser",{ currentUser });
+ // console.log("currentUser",{ currentUser });
   User.findById(currentUser)
     .orFail(new NotFoundError("No user found with matching id"))
     .then((user) => res.send(user))

@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin: 65px auto;
+  margin: 65px auto 60px;
   box-sizing: border-box;
 }
 @media screen and (max-width: 800px) {

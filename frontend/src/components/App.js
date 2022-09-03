@@ -7,7 +7,7 @@ import ImagePopup from './ImagePopup';
 import '../index.css';
 import api from '../utils/api';
 import * as auth from '../utils/auth';
-import {register, login, checkToken} from '../utils/auth';
+import { checkToken} from '../utils/auth';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -92,14 +92,15 @@ function App() {
         .checkToken(userToken)
         .then((res) => {
           if (res) {
-            setEmail(res.data.email);
+            
             setIsLoggedIn(true);
+            setEmail(res.data.email);
             history.push('/');
           } else {
             localStorage.removeItem('jwt');
           }
         })
-        .catch((err) => console.log(err + 'err from frontend App.js line 102'));
+        .catch((err) => console.log(err));
     }
   }, [history]);
 
@@ -126,7 +127,7 @@ function App() {
     auth
       .login({email, password})
       .then((res) => {
-        console.log(res);
+        
         if (res.token) {
           localStorage.setItem('jwt', res.token);
           setIsLoggedIn(true);

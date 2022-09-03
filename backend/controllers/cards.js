@@ -7,7 +7,7 @@ const getCards = (req, res) => {
   Card.find({})
     .orFail()
     .then((cards) => {
-      console.log(cards);
+      // console.log(cards);
       res.status(errorTypes.OK).send(cards)})
     .catch((err) => {
       handleError(err, req, res);
@@ -50,7 +50,9 @@ const deleteCard = (req, res) => {
     });
 };
 const likeCard = (req, res) => {
+  console.log(req.params.cardId)
   Card.findByIdAndUpdate(
+
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true }

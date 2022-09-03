@@ -1,23 +1,16 @@
 {
-  "name": "around-express",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "Around the US back end",
+  "description": "Node backend for Around US",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "lint": "npx eslint .",
     "dev": "nodemon app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NuriyaAkh/around-express.git"
-  },
   "author": "Nuriya Akhmedova",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/NuriyaAkh/around-express/issues"
-  },
-  "homepage": "https://github.com/NuriyaAkh/around-express#readme",
+  
   "devDependencies": {
     "eslint": "^8.18.0",
     "eslint-config-airbnb-base": "^15.0.0",

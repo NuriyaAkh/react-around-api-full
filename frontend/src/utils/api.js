@@ -16,29 +16,24 @@ class Api {
     // console.log(`Bearer ${localStorage.getItem("jwt")}`);
     // console.log("api", this._headers);
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: {
-        ...this._headers,
-        authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      },
+      headers: this._headers,
     }).then(this._checkResponse);
   }
 
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
-      headers: {
-        ...this._headers,
-        authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      },
+      headers: this._headers,
     }).then(this._checkResponse);
   }
-  editProfileInfo(userUpdate) {
+  editProfileInfo({username, about}) {
     //PATCH https://around.nomoreparties.co/v1/groupId/users/me
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
+
       body: JSON.stringify({
-        name: userUpdate.username,
-        about: userUpdate.about,
+        name: username,
+        about: about,
       }),
     }).then(this._checkResponse);
   }
@@ -46,20 +41,19 @@ class Api {
     //PATCH https://around.nomoreparties.co/v1/groupId/users/me/avatar
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._headers,
-      body: JSON.stringify({
-        avatar,
-      }),
+      //headers: this._headers,
+      headers: {
+        ...this._headers,
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
+      body: JSON.stringify({avatar: avatar}),
     }).then(this._checkResponse);
   }
   addNewCard({name, link}) {
     //POST https://around.nomoreparties.co/v1/groupId/cards
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
-      headers: {
-        ...this._headers,
-        authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name,
         link,
@@ -99,8 +93,7 @@ const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 const api = new Api({
   baseUrl: BASE_URL,
   headers: {
-    // authorization: '66d060c3-a92b-49d0-add5-d7e29bf411c9',
-    // authorization: `Bearer ${localStorage.getItem('jwt')}`,
+    authorization: `Bearer ${localStorage.getItem('jwt')}`,
     'Content-Type': 'application/json',
   },
 });
