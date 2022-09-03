@@ -9,6 +9,17 @@ const AuthorizationError = require("../errors/authorization-error");
 const jwt = require("jsonwebtoken");
 const { NODE_ENV, JWT_SECRET } = process.env;
 // console.log(process.env);
+
+const getCurrentUser = (req, res, next) => {
+  // console.log(req);
+   const currentUser = req.user._id;
+  // console.log("currentUser",{ currentUser });
+   User.findById(currentUser)
+     .orFail(new NotFoundError("No user found with matching id"))
+     .then((user) => res.send(user))
+     .catch(next);
+ };
+
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
@@ -44,7 +55,7 @@ const getUsers = (req, res, next) =>
 
 const getUsersById = (req, res, next) => {
   console.log("req.params.id", req.params.id);//?
-  return User.findById(req.params._id)
+  return User.findById(req.params.id)
     .orFail(new NotFoundError("No user found with that id"))
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
     .catch(next);
@@ -99,6 +110,9 @@ const updateUserData = (req, res, next) => {
     });
 };
 const updateUserAvatar = (req, res, next) => {
+  console.log(req.body);
+console.log(req.user._id);
+console.log("avatar");
   const { avatar } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
@@ -118,15 +132,7 @@ const updateUserAvatar = (req, res, next) => {
     });
 };
 
-const getCurrentUser = (req, res, next) => {
- // console.log(req);
-  const currentUser = req.user._id;
- // console.log("currentUser",{ currentUser });
-  User.findById(currentUser)
-    .orFail(new NotFoundError("No user found with matching id"))
-    .then((user) => res.send(user))
-    .catch(next);
-};
+
 
 module.exports = {
   getUsers,

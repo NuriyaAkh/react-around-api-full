@@ -7,7 +7,7 @@ import ImagePopup from './ImagePopup';
 import '../index.css';
 import api from '../utils/api';
 import * as auth from '../utils/auth';
-import { checkToken} from '../utils/auth';
+import {login, register, checkToken} from '../utils/auth';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -92,7 +92,6 @@ function App() {
         .checkToken(userToken)
         .then((res) => {
           if (res) {
-            
             setIsLoggedIn(true);
             setEmail(res.data.email);
             history.push('/');
@@ -105,8 +104,7 @@ function App() {
   }, [history]);
 
   const onRegister = ({email, password}) => {
-    auth
-      .register({email, password})
+    register({email, password})
       .then((res) => {
         if (res.data._id) {
           setInfoToolStatus('success');
@@ -120,30 +118,35 @@ function App() {
       })
       .finally(() => {
         setInfoToolPopupOpen(true);
+        setTimeout(() => {
+          setInfoToolPopupOpen(false);
+        }, 2000);
       });
   };
 
   const onLogIn = ({email, password}) => {
-    auth
-      .login({email, password})
+    login({email, password})
       .then((res) => {
-        
-        if (res.token) {
+        //console.log(res.token);
+        if (!res.token) {
+          setInfoToolStatus('fail');
+        } else {
           localStorage.setItem('jwt', res.token);
           setIsLoggedIn(true);
           setEmail(email);
           localStorage.setItem('email', email);
           history.push('/');
-        } else {
-          setInfoToolStatus('fail');
         }
       })
       .catch((err) => {
+        //console.log('catch login');
         setInfoToolStatus('fail');
-      })
-      .finally(() => {
         setInfoToolPopupOpen(true);
-      });
+      })
+      // .finally(() => {
+      //   console.log('finaly login');
+      //   setInfoToolPopupOpen(true);
+      // });
   };
   function handleAddPlaceClick() {
     setAddPlacePopupOpen(true);
