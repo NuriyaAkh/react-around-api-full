@@ -88,8 +88,7 @@ function App() {
     const userToken = localStorage.getItem('jwt');
     // console.log(userToken);
     if (userToken) {
-      auth
-        .checkToken(userToken)
+      checkToken(userToken)
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
@@ -142,6 +141,9 @@ function App() {
         //console.log('catch login');
         setInfoToolStatus('fail');
         setInfoToolPopupOpen(true);
+        setTimeout(() => {
+          setInfoToolPopupOpen(false);
+        }, 2000);
       })
       // .finally(() => {
       //   console.log('finaly login');
@@ -215,7 +217,7 @@ function App() {
         setCurrentUser(res);
         closeAllPopups();
       })
-      .catch((err) => console.error(`Error while executing: ${err}`))
+      .catch((err) => console.error(`Error while executing: handle avatar ? ${err}`))
       .finally(() => {
         setIsLoading(false);
       });

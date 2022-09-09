@@ -39,6 +39,7 @@ class Api {
   }
   editProfilePicture({avatar}) {
     //PATCH https://around.nomoreparties.co/v1/groupId/users/me/avatar
+    console.log("avatar from api")
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       //headers: this._headers,

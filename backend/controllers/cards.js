@@ -1,29 +1,30 @@
-const {handleError} = require("../utils");
-const { errorTypes } = require("../utils");
+const {handleError, errorTypes} = require("../utils");
 const Card = require("../models/card");
+const NotFoundError = require("../errors/not-found-error");
+const BadRequestError = require("../errors/bad-request-error");
+const ConflictError = require("../errors/conflict-error");
+const AuthorizationError = require("../errors/authorization-error");
+const jwt = require("jsonwebtoken");
+const { NODE_ENV, JWT_SECRET } = process.env;
 
-const getCards = (req, res) => {
+const getCards = (req, res,next) => {
 
   Card.find({})
-    .orFail()
+    .orFail(new NotFoundError("No cards found"))
     .then((cards) => {
       // console.log(cards);
       res.status(errorTypes.OK).send(cards)})
-    .catch((err) => {
-      handleError(err, req, res);
-    });
+    .catch(next);
 };
-const createNewCard = (req, res) => {
+const createNewCard = (req, res,next) => {
   const { name, link } = req.body;
   const owner = req.user._id;
-  Card.create({ name, link, owner })
+ return Card.create({ name, link, owner })
     .then((card) => res.send({ data: card }))
-    .catch((err) => {
-      handleError(err, req, res);
-    });
+    .catch(next);
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res,next) => {
   Card.findById(req.params.cardId)
     .orFail(() => {
       const error = new Error("Card not found");
@@ -49,7 +50,7 @@ const deleteCard = (req, res) => {
       handleError(err, req, res);
     });
 };
-const likeCard = (req, res) => {
+const likeCard = (req, res,next) => {
   console.log(req.params.cardId)
   Card.findByIdAndUpdate(
 

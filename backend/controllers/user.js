@@ -112,7 +112,7 @@ const updateUserData = (req, res, next) => {
 const updateUserAvatar = (req, res, next) => {
   console.log(req.body);
 console.log(req.user._id);
-console.log("avatar");
+console.log("avatar controller");
   const { avatar } = req.body;
   User.findByIdAndUpdate(
     req.user._id,

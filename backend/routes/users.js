@@ -21,6 +21,6 @@ router.get("/users/:id", validateUserId, getUsersById);
 
 // router.post('/users', createNewUser);
 router.patch("/users/me", validateRequestAuth, updateUserData);
-router.patch("users/me/avatar", validateRequestAuth, updateUserAvatar);
+router.patch("/me/avatar", validateRequestAuth, updateUserAvatar);
 
 module.exports = router;
