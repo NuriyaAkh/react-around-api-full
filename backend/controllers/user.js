@@ -122,16 +122,17 @@ console.log("avatar controller");
     { new: true, runValidators: true }
   )
     .orFail(new NotFoundError("No user found with matching id"))
-    .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid avatar URL"));
-      } else if (err.name === "CastError") {
-        next(new BadRequestError("Invalid User ID"));
-      } else {
-        next(err);
-      }
-    });
+    .then((user) => res.send(user))
+    .catch(next)
+    // .catch((err) => {
+    //   if (err.name === "ValidationError") {
+    //     next(new BadRequestError("Invalid avatar URL"));
+    //   } else if (err.name === "CastError") {
+    //     next(new BadRequestError("Invalid User ID"));
+    //   } else {
+    //     next(err);
+    //   }
+    // });
 };
 
 
