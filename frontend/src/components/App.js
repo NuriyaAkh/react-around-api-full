@@ -6,7 +6,7 @@ import Footer from './Footer';
 import ImagePopup from './ImagePopup';
 import '../index.css';
 import api from '../utils/api';
-import * as auth from '../utils/auth';
+
 import {login, register, checkToken} from '../utils/auth';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
@@ -17,6 +17,8 @@ import Login from './Login';
 import Register from './Register';
 import ProtectedRoute from './ProtectedRoute';
 import InfoTooltip from './InfoTooltip';
+
+
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
@@ -35,12 +37,13 @@ function App() {
 
   const verifyToken = useCallback(() => {
     const userToken = localStorage.getItem('jwt');
-
     if (userToken) {
       checkToken(userToken)
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
+            setEmail(res.email);
+             history.push('/');
           }
         })
         .catch((err) => {
@@ -48,7 +51,7 @@ function App() {
           console.log(err);
         });
     }
-  }, []);
+  }, [history]);
 
   useEffect(() => {
     verifyToken();
@@ -84,23 +87,8 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  useEffect(() => {
-    const userToken = localStorage.getItem('jwt');
-    // console.log(userToken);
-    if (userToken) {
-      checkToken(userToken)
-        .then((res) => {
-          if (res) {
-            setIsLoggedIn(true);
-            setEmail(res.data.email);
-            history.push('/');
-          } else {
-            localStorage.removeItem('jwt');
-          }
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [history]);
+
+
 
   const onRegister = ({email, password}) => {
     register({email, password})

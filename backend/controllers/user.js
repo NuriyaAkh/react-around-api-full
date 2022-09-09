@@ -13,7 +13,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const getCurrentUser = (req, res, next) => {
   // console.log(req);
    const currentUser = req.user._id;
-  // console.log("currentUser",{ currentUser });
+  //console.log("currentUser",{ currentUser });
    User.findById(currentUser)
      .orFail(new NotFoundError("No user found with matching id"))
      .then((user) => res.send(user))
@@ -54,7 +54,7 @@ const getUsers = (req, res, next) =>
     .catch(next);
 
 const getUsersById = (req, res, next) => {
-  console.log("req.params.id", req.params.id);//?
+  console.log("get user by ID", req.params.id);//?
   return User.findById(req.params.id)
     .orFail(new NotFoundError("No user found with that id"))
     .then((user) => res.status(HTTP_SUCCESS_OK).send({ data: user }))
@@ -92,22 +92,24 @@ const createNewUser = (req, res, next) => {
 };
 const updateUserData = (req, res, next) => {
   const { name, about } = req.body;
+  console.log("userUpdate",req.user._id)
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
     { new: true, runValidators: true }
   )
     .orFail(new NotFoundError("No user found with matching id"))
-    .then((user) => res.send({ data: user }))
-    .catch((err) => {
-      if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid name or about"));
-      } else if (err.name === "CastError") {
-        next(new BadRequestError("Invalid User ID"));
-      } else {
-        next(err);
-      }
-    });
+    .then((user) => res.send(user))
+    .catch(next);
+    // .catch((err) => {
+    //   if (err.name === "ValidationError") {
+    //     next(new BadRequestError("Invalid name or about"));
+    //   } else if (err.name === "CastError") {
+    //     next(new BadRequestError("Invalid User ID"));
+    //   } else {
+    //     next(err);
+    //   }
+    // });
 };
 const updateUserAvatar = (req, res, next) => {
   console.log(req.body);

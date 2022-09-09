@@ -20,7 +20,7 @@ const createNewCard = (req, res,next) => {
   const { name, link } = req.body;
   const owner = req.user._id;
  return Card.create({ name, link, owner })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch(next);
 };
 
@@ -51,14 +51,14 @@ const deleteCard = (req, res,next) => {
     });
 };
 const likeCard = (req, res,next) => {
-  console.log(req.params.cardId)
+ // console.log("req.params.cardId",req.params.cardId)
   Card.findByIdAndUpdate(
 
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true }
   )
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send( card ))
     .catch((err) => {
       handleError(err, req, res);
     });

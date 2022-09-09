@@ -27,9 +27,13 @@ class Api {
   }
   editProfileInfo({username, about}) {
     //PATCH https://around.nomoreparties.co/v1/groupId/users/me
+    console.log("edit user data api f");
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
 
       body: JSON.stringify({
         name: username,
@@ -54,7 +58,10 @@ class Api {
     //POST https://around.nomoreparties.co/v1/groupId/cards
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
       body: JSON.stringify({
         name,
         link,
@@ -70,9 +77,12 @@ class Api {
   }
   addLike(cardId) {
     //PUT https://around.nomoreparties.co/v1/groupId/cards/likes/cardId
-    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'PUT',
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
     }).then(this._checkResponse);
   }
   removeLike(cardId) {
