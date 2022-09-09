@@ -8,7 +8,7 @@ export default function Card({card, onCardClick, onCardLike, onCardDelete}) {
   const isOwn = card.owner === currentUser._id;
   
   // Check if the card was liked by the current user
-  const isLiked = card.likes.some((user) => user === currentUser._id);
+  const isLiked = card.likes.some((user) => user._id === currentUser._id);
   
 
   // Creating a variable which you'll then set in `className` for the delete button

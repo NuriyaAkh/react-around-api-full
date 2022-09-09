@@ -51,7 +51,8 @@ const deleteCard = (req, res,next) => {
     });
 };
 const likeCard = (req, res,next) => {
- // console.log("req.params.cardId",req.params.cardId)
+ console.log("like card",req.params.cardId)
+ console.log("liker", req.user._id)
   Card.findByIdAndUpdate(
 
     req.params.cardId,
@@ -59,9 +60,10 @@ const likeCard = (req, res,next) => {
     { new: true }
   )
     .then((card) => res.send( card ))
-    .catch((err) => {
-      handleError(err, req, res);
-    });
+    .catch(next);
+    // .catch((err) => {
+    //   handleError(err, req, res);
+    // });
 };
 const dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
