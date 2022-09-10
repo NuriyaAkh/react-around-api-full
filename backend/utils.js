@@ -21,4 +21,4 @@ const handleError = (err, req, res) => {
   }
 };
 
-module.exports = { handleError,errorTypes };
+module.exports = { handleError, errorTypes };

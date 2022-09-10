@@ -1,75 +1,66 @@
-const {handleError, errorTypes} = require("../utils");
-const Card = require("../models/card");
-const NotFoundError = require("../errors/not-found-error");
-const BadRequestError = require("../errors/bad-request-error");
-const ConflictError = require("../errors/conflict-error");
-const AuthorizationError = require("../errors/authorization-error");
-const jwt = require("jsonwebtoken");
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { handleError, errorTypes } = require('../utils');
+const Card = require('../models/card');
+const NotFoundError = require('../errors/not-found-error');
 
-const getCards = (req, res,next) => {
-
+const getCards = (req, res, next) => {
   Card.find({})
-    .orFail(new NotFoundError("No cards found"))
+    .orFail(new NotFoundError('No cards found'))
     .then((cards) => {
-      // console.log(cards);
-      res.status(errorTypes.OK).send(cards)})
+      res.status(errorTypes.OK).send(cards);
+    })
     .catch(next);
 };
-const createNewCard = (req, res,next) => {
+
+const createNewCard = (req, res, next) => {
   const { name, link } = req.body;
   const owner = req.user._id;
- return Card.create({ name, link, owner })
+  return Card.create({ name, link, owner })
     .then((card) => res.send(card))
     .catch(next);
 };
 
-const deleteCard = (req, res,next) => {
+const deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .orFail(() => {
-      const error = new Error("Card not found");
+      const error = new Error('Card not found');
       error.statusCode = 404;
       throw error;
     })
     .then((card) => {
       if (!(card.owner.toString() === req.user._id)) {
-        const error = new Error("Action forbidden");
+        const error = new Error('Action forbidden');
         error.statusCode = 404;
         throw error;
       }
 
       Card.findByIdAndDelete(req.params.cardId)
         .orFail(() => {
-          const error = new Error("User can delete only own cards");
+          const error = new Error('User can delete only own cards');
           error.statusCode = 403;
           throw error;
         })
-        .then((card) => res.send({ data: card }));
+        .then((card) => res.send(card));
     })
     .catch((err) => {
       handleError(err, req, res);
     });
 };
-const likeCard = (req, res,next) => {
- console.log("like card",req.params.cardId)
- console.log("liker", req.user._id)
-  Card.findByIdAndUpdate(
 
+const likeCard = (req, res, next) => {
+  Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
-    { new: true }
+    { new: true },
   )
-    .then((card) => res.send( card ))
+    .then((card) => res.send(card))
     .catch(next);
-    // .catch((err) => {
-    //   handleError(err, req, res);
-    // });
 };
+
 const dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // remove _id from the array
-    { new: true }
+    { new: true },
   )
     .then((card) => res.send({ data: card }))
     .catch((err) => {

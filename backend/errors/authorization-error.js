@@ -1,4 +1,4 @@
-const { HTTP_AUTHORIZATION_ERROR } = require("../utils/error");
+const { HTTP_AUTHORIZATION_ERROR } = require('../utils/error');
 
 class AuthorizationError extends Error {
   constructor(message) {
