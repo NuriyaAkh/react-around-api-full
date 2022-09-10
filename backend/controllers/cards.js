@@ -20,7 +20,7 @@ const createNewCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  
+
   Card.findById(req.params.cardId)
     .orFail(() => {
       const error = new Error("Card not found");
@@ -61,17 +61,15 @@ const likeCard = (req, res, next) => {
     .catch(next);
 };
 
-const dislikeCard = (req, res) => {
+const dislikeCard = (req, res, next) => {
   console.log("dislikeCard");
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // remove _id from the array
     { new: true }
   )
-    .then((card) => res.send({ data: card }))
-    .catch((err) => {
-      handleError(err, req, res);
-    });
+    .then((card) => res.send(card))
+    .catch(next);
 };
 
 module.exports = {
