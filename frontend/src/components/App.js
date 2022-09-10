@@ -152,7 +152,7 @@ function App() {
     console.log('isLiked', isLiked);
     // Send a request to the API and getting the updated card data
     api
-      .changeLikeCardStatus(card._id, !isLiked, localStorage.getItem('jwt'))
+      .changeLikeCardStatus(card._id, isLiked, localStorage.getItem('jwt'))
       .then((newCard) => {
         setCards((state) =>
           state.map((currentCard) =>
