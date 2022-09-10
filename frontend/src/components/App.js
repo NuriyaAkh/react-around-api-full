@@ -6,7 +6,6 @@ import Footer from './Footer';
 import ImagePopup from './ImagePopup';
 import '../index.css';
 import api from '../utils/api';
-
 import {login, register, checkToken} from '../utils/auth';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
@@ -17,7 +16,6 @@ import Login from './Login';
 import Register from './Register';
 import ProtectedRoute from './ProtectedRoute';
 import InfoTooltip from './InfoTooltip';
-
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -43,7 +41,7 @@ function App() {
           if (res) {
             setIsLoggedIn(true);
             setEmail(res.email);
-             history.push('/');
+            history.push('/');
           }
         })
         .catch((err) => {
@@ -87,9 +85,6 @@ function App() {
     }
   }, [isLoggedIn]);
 
-
-
-
   const onRegister = ({email, password}) => {
     register({email, password})
       .then((res) => {
@@ -114,7 +109,6 @@ function App() {
   const onLogIn = ({email, password}) => {
     login({email, password})
       .then((res) => {
-        //console.log(res.token);
         if (!res.token) {
           setInfoToolStatus('fail');
         } else {
@@ -126,17 +120,12 @@ function App() {
         }
       })
       .catch((err) => {
-        //console.log('catch login');
         setInfoToolStatus('fail');
         setInfoToolPopupOpen(true);
         setTimeout(() => {
           setInfoToolPopupOpen(false);
         }, 2000);
-      })
-      // .finally(() => {
-      //   console.log('finaly login');
-      //   setInfoToolPopupOpen(true);
-      // });
+      });
   };
   function handleAddPlaceClick() {
     setAddPlacePopupOpen(true);
@@ -157,7 +146,6 @@ function App() {
   function handleCardLike(card) {
     //Check one more time if this card was already liked
     const isLiked = card.likes.some((user) => user._id === currentUser._id);
-
     // Send a request to the API and getting the updated card data
     api
       .changeLikeCardStatus(card._id, !isLiked, localStorage.getItem('jwt'))
@@ -205,7 +193,9 @@ function App() {
         setCurrentUser(res);
         closeAllPopups();
       })
-      .catch((err) => console.error(`Error while executing: handle avatar ? ${err}`))
+      .catch((err) =>
+        console.error(`Error while executing: handle avatar ? ${err}`)
+      )
       .finally(() => {
         setIsLoading(false);
       });
