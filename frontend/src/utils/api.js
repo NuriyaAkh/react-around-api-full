@@ -13,8 +13,6 @@ class Api {
     return Promise.all([this.getUserData(), this.getInitialCards()]);
   }
   getUserData() {
-    // console.log(`Bearer ${localStorage.getItem("jwt")}`);
-    // console.log("api", this._headers);
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
     }).then(this._checkResponse);
@@ -27,7 +25,6 @@ class Api {
   }
   editProfileInfo({username, about}) {
     //PATCH https://around.nomoreparties.co/v1/groupId/users/me
-    console.log("edit user data api f");
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
@@ -43,10 +40,10 @@ class Api {
   }
   editProfilePicture({avatar}) {
     //PATCH https://around.nomoreparties.co/v1/groupId/users/me/avatar
-    console.log("avatar from api", avatar)
+
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
-      //headers: this._headers,
+
       headers: {
         ...this._headers,
         authorization: `Bearer ${localStorage.getItem('jwt')}`,
@@ -72,10 +69,14 @@ class Api {
     //DELETE https://around.nomoreparties.co/v1/groupId/cards/cardId
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
     }).then(this._checkResponse);
   }
   addLike(cardId) {
+    console.log('add like');
     //PUT https://around.nomoreparties.co/v1/groupId/cards/likes/cardId
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'PUT',
@@ -86,16 +87,21 @@ class Api {
     }).then(this._checkResponse);
   }
   removeLike(cardId) {
+    console.log('remove like');
     //DELETE https://around.nomoreparties.co/v1/groupId/cards/likes/cardId
-    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: 'DELETE',
       headers: this._headers,
     }).then(this._checkResponse);
   }
   changeLikeCardStatus(cardId, isLiked) {
+    console.log('change like', isLiked);
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: isLiked ? 'PUT' : 'DELETE',
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
     }).then(this._checkResponse);
   }
 }
