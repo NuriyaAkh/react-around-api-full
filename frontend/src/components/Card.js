@@ -3,14 +3,17 @@ import {CurrentUserContext} from '../contexts/CurrentUserContext';
 
 export default function Card({card, onCardClick, onCardLike, onCardDelete}) {
   const currentUser = React.useContext(CurrentUserContext);
-// console.log("card owner",card.owner);
-// console.log("current user", currentUser._id )
+  // console.log("card owner",card.owner);
+  // console.log("current user", currentUser._id )
   // Checking if the current user is the owner of the current card
   const isOwn = card.owner === currentUser._id;
-//console.log("why it is not a list of cards",card);
+  console.log("owner", isOwn);
+  console.log("card",card);
+  console.log("card likes", card.likes);
+  console.log("current user", currentUser._id);
   // Check if the card was liked by the current user
-  const isLiked = card.likes.some((cardLiker) => cardLiker._id === currentUser._id);
-console.log("isLiked 1",isLiked);
+  const isLiked = card.likes.some((cardLiker) => cardLiker === currentUser._id);
+  console.log('isLiked 1', isLiked);
   // Creating a variable which you'll then set in `className` for the delete button
   const cardDeleteButtonClassName = `card__delete ${
     isOwn ? 'card__delete' : 'card__delete_hidden'
