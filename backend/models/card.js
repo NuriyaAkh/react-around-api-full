@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Card name requiered '],
+    required: [true, "Card name requiered "],
     minlength: 2,
     maxlength: 30,
   },
   link: {
     type: String,
-    required: [true, 'Card link required'],
+    required: [true, "Card link required"],
     validate: {
       validator: (v) => {
         /https?:\/\/(www\.)?\S+\/[-._~:/?%#[\]@!$&'()*+,;=\w]*#?$/.test(v);
@@ -20,17 +20,15 @@ const cardSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'user',
+    ref: "user",
   },
-  likes: [
-    {
-      type: Array,
-      default: [],
-    },
-  ],
+  likes: {
+    type: Array,
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
-module.exports = mongoose.model('card', cardSchema);
+module.exports = mongoose.model("card", cardSchema);
