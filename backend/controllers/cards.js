@@ -20,7 +20,6 @@ const createNewCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-
   Card.findById(req.params.cardId)
     .orFail(() => {
       const error = new Error("Card not found");
@@ -46,12 +45,6 @@ const deleteCard = (req, res, next) => {
 };
 
 const likeCard = (req, res, next) => {
-  // console.log("req.params coming from likeCard backend", req.params);
-  // console.log(
-  //   "req.params.cardId coming from likeCard backend",
-  //   req.params.cardId
-  // );
-  console.log("likeCard");
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
@@ -62,7 +55,6 @@ const likeCard = (req, res, next) => {
 };
 
 const dislikeCard = (req, res, next) => {
-  console.log("dislikeCard");
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // remove _id from the array

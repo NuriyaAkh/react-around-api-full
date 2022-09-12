@@ -75,27 +75,9 @@ class Api {
       },
     }).then(this._checkResponse);
   }
-  // addLike(cardId) {
-  //   console.log('add like');
-  //   //PUT https://around.nomoreparties.co/v1/groupId/cards/likes/cardId
-  //   return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-  //     method: 'PUT',
-  //     headers: {
-  //       ...this._headers,
-  //       authorization: `Bearer ${localStorage.getItem('jwt')}`,
-  //     },
-  //   }).then(this._checkResponse);
-  // }
-  // removeLike(cardId) {
-  //   console.log('remove like');
-  //   //DELETE https://around.nomoreparties.co/v1/groupId/cards/likes/cardId
-  //   return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-  //     method: 'DELETE',
-  //     headers: this._headers,
-  //   }).then(this._checkResponse);
-  // }
+
   changeLikeCardStatus(cardId, isLiked) {
-    console.log('change like, isLiked from api', isLiked);
+  
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: isLiked ? 'PUT' : 'DELETE',
       headers: {

@@ -145,18 +145,15 @@ function App() {
   }
   function handleCardLike(card) {
     //Check one more time if this card was already liked
-    // console.log('card', card);
-    // console.log("current user id",currentUser._id);
-    // console.log("card likes",card.likes);
+
     const isLiked = card.likes.some(
-      cardLiker => cardLiker === currentUser._id
+      (cardLiker) => cardLiker === currentUser._id
     );
-   
+
     // Send a request to the API and getting the updated card data
     api
       .changeLikeCardStatus(card._id, !isLiked, localStorage.getItem('jwt'))
       .then((newCard) => {
-        console.log('isLiked', isLiked)
         setCards((state) =>
           state.map((currentCard) =>
             currentCard._id === card._id ? newCard : currentCard
