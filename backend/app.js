@@ -32,8 +32,8 @@ app.use((req, res, next)=> {
 res.header('Access-Control-Allow-Origin', "*");
 const { method } = req; // Saving the request type (HTTP method) to the corresponding variable
 
-// Default value for Access-Control-Allow-Methods header (all request types are allowed)
-const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
+// // Default value for Access-Control-Allow-Methods header (all request types are allowed)
+// const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
 
 // If this is a preliminary request, add the required headers
 if (method === 'OPTIONS') {
