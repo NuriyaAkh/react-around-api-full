@@ -54,11 +54,11 @@ if (method === 'OPTIONS') {
 // app.use(cors());
 // app.options('*', cors()); // enable requests for all routes
 app.use(requestLogger); // enabling the request logger
-// app.get('/crash-test', () => {
-//   setTimeout(() => {
-//     throw new Error('Server will crash now');
-//   }, 0);
-// });
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Server will crash now');
+  }, 0);
+});
 app.post('/signin', login);
 app.post('/signup', createNewUser);
 // authorization
