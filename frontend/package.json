@@ -19,7 +19,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "npm run build && scp -r -i ~/.ssh/id_ed25519 ./build/* nuriya_a@nuriya.students.nomoredomainssbs.ru:/home/nuriya_a/react-around-api-full/frontend"
   },
   "eslintConfig": {
     "extends": [
