@@ -1,6 +1,12 @@
-# react-around-api-full
-The API of "Around the U.S." with authorization and registration handled by the back-end server.
+# React-around-api-full
+The API of "Around the U.S." an interactive page where users can add, remove, or like photos, with authorization and registration handled by the back-end server.
 
-This repository contains the full API of "Around the U.S." project that features user authorization and user registration and handles cards and users. Please add to this readme:
-* a link to repository with the complete React application which uses this API[https://github.com/NuriyaAkh/react-around-api-full]
-* a link to the website that hosts your API.[https://nuriya.students.nomoredomainssbs.ru]
+## 🛠 Technologies
+
+- **Stack**: MongoDB, Express.js, React, and Node.js
+- **Google Cloud** hosts the backend
+- **Mongoose** wraps MongoDB and manages data with a REST Api
+- **JWT's** secure the authentication process
+
+* [ Repository](https://github.com/NuriyaAkh/react-around-api-full)
+* [Website](https://nuriya.students.nomoredomainssbs.ru)
