@@ -33,10 +33,9 @@ const login = (req, res, next) => {
       );
       res.send({ data: user.toJSON(), token });
     })
-    .catch((err) => {
-      next(new AuthorizationError('Incorrect email or password'));
-      console.log(err);
-    });
+    .catch(
+      next(new AuthorizationError('Incorrect email or password')),
+    );
 };
 const getUsers = (req, res, next) => User.find({})
   .orFail(new NotFoundError('Users are not found'))
@@ -63,8 +62,11 @@ const createNewUser = (req, res, next) => {
         return bcrypt.hash(password, 10);
       }
     })
-    .then((hash) => User.create({
-      name, about, avatar, email, password: hash,
+    .then(() => User.create({
+      name,
+      about,
+      avatar,
+      email,
     }))
     .then((user) => res.send({ data: user }))
     .catch((err) => {

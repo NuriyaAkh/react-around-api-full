@@ -4,7 +4,7 @@ const checkServerResponse = (res) => {
   return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
 };
 const register = ({ email, password }) => {
-  console.log(JSON.stringify({ email, password }));
+ 
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {

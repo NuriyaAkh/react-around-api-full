@@ -8,7 +8,7 @@ const auth = (req, res, next) => {
 
   // let's check the header exists and starts with 'Bearer '
   if (!authorization || !authorization.startsWith('Bearer')) {
-    return res.status(401).send({ message: 'Authorization required' });
+    return res.status(403).send({ message: 'Authorization required' });
   }
   // getting the token
   const token = authorization.replace('Bearer ', '');
@@ -22,7 +22,7 @@ const auth = (req, res, next) => {
     );
   } catch (err) {
     // we return an error if something goes wrong
-    return res.status(401).send({ message: 'Authorization required' });
+    return res.status(403).send({ message: 'Authorization required' });
   }
   req.user = payload; // assigning the payload to the request object
 

@@ -65,8 +65,9 @@ const validateUserId = celebrate({
 
 const validateCardId = celebrate({
   body: Joi.object().keys({
-    cardId: Joi.string().hex().length(24),
-    'any.invalid': 'Invalid card id',
+    cardId: Joi.string().hex().length(24).messages({
+      'any.invalid': 'Invalid card id',
+    }),
   }),
 });
 
