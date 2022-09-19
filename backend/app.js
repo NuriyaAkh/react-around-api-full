@@ -11,7 +11,7 @@ const { createNewUser, login } = require('./controllers/user');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const { allowedCors, DEFAULT_ALLOWED_METHODS } = require('./utils/cors');
 const auth = require('./middleware/auth');
-const validateLogin = require('./middleware/validation');
+const {validateLogin} = require('./middleware/validation');
 app.use(helmet());
 mongoose.connect('mongodb://localhost:27017/aroundb');
 
@@ -57,10 +57,8 @@ app.get('/crash-test', () => {
     throw new Error('Server will crash now');
   }, 0);
 });
-app.post('/signin', login);
-app.post('/signup', createNewUser);
-// app.post('/signin', validateLogin, login);
-// app.post('/signup', validateLogin, createNewUser);
+app.post('/signin', validateLogin, login);
+app.post('/signup', validateLogin, createNewUser);
 // authorization
 app.use(auth);
 app.use('/', userRouter);
