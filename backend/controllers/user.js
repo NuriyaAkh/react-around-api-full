@@ -69,7 +69,7 @@ const createNewUser = (req, res, next) => {
       email,
       password:hash
     }))
-    .then((user) => res.send(user))
+    .then((user) => res.send( {name,about,avatar,email}))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Missing or invalid email or password'));
