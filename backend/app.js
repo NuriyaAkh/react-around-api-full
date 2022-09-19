@@ -57,8 +57,10 @@ app.get('/crash-test', () => {
     throw new Error('Server will crash now');
   }, 0);
 });
-app.post('/signin', validateLogin, login);
-app.post('/signup', validateLogin, createNewUser);
+app.post('/signin', login);
+app.post('/signup', createNewUser);
+// app.post('/signin', validateLogin, login);
+// app.post('/signup', validateLogin, createNewUser);
 // authorization
 app.use(auth);
 app.use('/', userRouter);
