@@ -5,7 +5,7 @@ const validateURL = (value, helpers) => {
   if (validator.isURL(value)) {
     return value;
   }
-  return helpers.error('The URL is not valid');
+  return helpers.message('The URL is not valid');
 };
 
 const validateEmail = (value, helpers) => {
@@ -54,9 +54,8 @@ const validateLogin = celebrate({
     }),
   }),
 });
-// ? Please note that id is passed in params and not in the body.
 //Also, please make sure that Invalid ID cases are accompanied
-//by 400 status code because now 500 is returned
+//by 400 status code
 
 const validateUserId = celebrate({
   params: Joi.object().keys({
