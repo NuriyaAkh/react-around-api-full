@@ -5,7 +5,7 @@ const validateURL = (value, helpers) => {
   if (validator.isURL(value)) {
     return value;
   }
-  return helpers.error('string.uri');
+  return helpers.error('The URL is not valid');
 };
 
 const validateEmail = (value, helpers) => {
@@ -54,9 +54,12 @@ const validateLogin = celebrate({
     }),
   }),
 });
+// ? Please note that id is passed in params and not in the body.
+//Also, please make sure that Invalid ID cases are accompanied
+//by 400 status code because now 500 is returned
 
 const validateUserId = celebrate({
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     _id: Joi.string().hex().length(24).messages({
       'any.invalid': 'Invalid User Name',
     }),
@@ -64,7 +67,7 @@ const validateUserId = celebrate({
 });
 
 const validateCardId = celebrate({
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     cardId: Joi.string().hex().length(24).messages({
       'any.invalid': 'Invalid card id',
     }),

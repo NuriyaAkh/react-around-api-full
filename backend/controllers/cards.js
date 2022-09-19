@@ -34,7 +34,7 @@ const deleteCard = (req, res, next) => {
 
       Card.findByIdAndDelete(req.params.cardId)
         .orFail(() => {
-          const error = new Error('User can delete only own cards');
+          const error = new Error('Card not found');
           error.statusCode = 404;
           throw error;
         })
