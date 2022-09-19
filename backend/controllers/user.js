@@ -67,7 +67,7 @@ const createNewUser = (req, res, next) => {
       about,
       avatar,
       email,
-      password:hash
+      password
     }))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
