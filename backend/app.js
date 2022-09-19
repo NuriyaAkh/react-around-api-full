@@ -11,7 +11,7 @@ const { createNewUser, login } = require('./controllers/user');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const { allowedCors, DEFAULT_ALLOWED_METHODS } = require('./utils/cors');
 const auth = require('./middleware/auth');
-const {validateLogin} = require('./middleware/validation');
+const validateLogin = require('./middleware/validation');
 app.use(helmet());
 mongoose.connect('mongodb://localhost:27017/aroundb');
 
