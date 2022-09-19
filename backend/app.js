@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const helmet = require('helmet');
 const { errors } = require('celebrate');
+
 const app = express();
 const { PORT = 3000 } = process.env;
 const userRouter = require('./routes/users');
@@ -11,7 +12,8 @@ const { createNewUser, login } = require('./controllers/user');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const { allowedCors, DEFAULT_ALLOWED_METHODS } = require('./utils/cors');
 const auth = require('./middleware/auth');
-const {validateLogin} = require('./middleware/validation');
+const { validateLogin } = require('./middleware/validation');
+
 app.use(helmet());
 mongoose.connect('mongodb://localhost:27017/aroundb');
 

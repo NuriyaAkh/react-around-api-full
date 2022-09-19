@@ -54,8 +54,8 @@ const validateLogin = celebrate({
     }),
   }),
 });
-//Also, please make sure that Invalid ID cases are accompanied
-//by 400 status code
+// Also, please make sure that Invalid ID cases are accompanied
+// by 400 status code
 
 const validateUserId = celebrate({
   params: Joi.object().keys({
