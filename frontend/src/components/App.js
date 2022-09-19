@@ -88,7 +88,8 @@ function App() {
   const onRegister = ({email, password}) => {
     register({email, password})
       .then((res) => {
-        if (res.data._id) {
+        console.log(res);
+        if (res._id) {
           setInfoToolStatus('success');
           history.push('/signin');
         } else {
@@ -96,6 +97,7 @@ function App() {
         }
       })
       .catch((err) => {
+        console.log(err);
         setInfoToolStatus('fail');
       })
       .finally(() => {

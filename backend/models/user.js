@@ -50,16 +50,19 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
       .select('+password') // this — the User model
       // the password hash will be there, in the user object
       .then((user) => {
+        console.log("before if")
         // not found - rejecting the promise
         if (!user) {
+          console.log("before if not user")
           return Promise.reject(new Error('Incorrect email or password'));
         }
         // found - comparing hashes
         return bcrypt.compare(password, user.password).then((match) => {
           if (!match) {
+            console.log("before if not match")
             return Promise.reject(new Error('Incorrect email or password'));
           }
-
+          console.log("before return")
           return user;
         });
       })

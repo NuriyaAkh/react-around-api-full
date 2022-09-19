@@ -23,6 +23,7 @@ const login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
+      console.log(user);
       const token = jwt.sign(
         { _id: user._id },
 
@@ -31,10 +32,11 @@ const login = (req, res, next) => {
           expiresIn: '7d',
         },
       );
-      res.send({ data: user.toJSON(), token });
+
+      res.send( {token});
     })
-    .catch(
-      next(new AuthorizationError('Incorrect email or password')),
+    .catch(()=>{
+      next(new AuthorizationError('Incorrect email or password'))},
     );
 };
 const getUsers = (req, res, next) => User.find({})
@@ -48,6 +50,7 @@ const getUsersById = (req, res, next) => User.findById(req.params.id)
   .catch(next);
 
 const createNewUser = (req, res, next) => {
+
   const {
     name, about, avatar, email, password,
   } = req.body;
@@ -69,7 +72,9 @@ const createNewUser = (req, res, next) => {
       email,
       password:hash
     }))
-    .then((user) => res.send( {name,about,avatar,email}))
+    .then((user) => {
+      const {name,about,avatar,email,_id}=user;
+      res.send( {name,about,avatar,email,_id})})
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Missing or invalid email or password'));
