@@ -10,3 +10,5 @@ The API of "Around the U.S." an interactive page where users can add, remove, or
 
 * [ Repository](https://github.com/NuriyaAkh/react-around-api-full)
 * [Website](https://nuriya.students.nomoredomainssbs.ru)
+
+###### For testing purposes please enter the following email:n@test.com, password:password
